@@ -32,7 +32,7 @@ function range() {
   else if (S.per === 'week') { const d = new Date(n); d.setDate(n.getDate() - 6); a = iso(d); } // 7 hari terakhir
   else if (S.per === 'month') a = t.slice(0, 8) + '01';
   else if (S.per === 'last') { a = iso(new Date(n.getFullYear(), n.getMonth() - 2, 24)); b = iso(new Date(n.getFullYear(), n.getMonth() - 1, 25)); } // 24 dua bulan lalu s/d 25 bulan lalu
-  else { a = S.from || t; b = S.to || t; if (a > b) [a, b] = [b, a]; }
+  else { a = S.from || mAgo(); b = S.to || t; if (a > b) [a, b] = [b, a]; }
   const len = Math.round((new Date(b) - new Date(a)) / 864e5) + 1;
   const pb = new Date(new Date(a) - 864e5), pa = new Date(pb - (len - 1) * 864e5);
   return { a, b, len, pa: iso(pa), pb: iso(pb) };
@@ -54,7 +54,7 @@ async function load() {
 // ---------- tampilan ----------
 const chips = () => `<div class="chips">${[['day', 'Hari ini'], ['week', 'Minggu ini'], ['month', 'Bulan ini'], ['last', 'Bulan lalu'], ['custom', 'Kustom']]
   .map(([k, l]) => `<button class="chip ${S.per === k ? 'on' : ''}" data-per="${k}">${l}</button>`).join('')}</div>` +
-  (S.per === 'custom' ? `<div class="row"><input type="date" id="from" value="${S.from || today()}"><input type="date" id="to" value="${S.to || today()}"></div>` : '');
+  (S.per === 'custom' ? `<div class="row"><input type="date" id="from" value="${S.from || mAgo()}"><input type="date" id="to" value="${S.to || today()}"></div>` : '');
 const txRow = r => `<button class="tx" data-id="${r.id}" data-ty="${r.type}"><i class="dot ${r.type}"></i><span><b>${esc(r.cat)}</b><small>${fmtD(r.date)}${r.note ? ' - ' + esc(r.note) : ''}</small></span><em class="${r.type}">${r.type === 'in' ? '+' : '-'}${rp(r.amt)}</em></button>`;
 const empty = (m) => `<div class="empty"><i>🗂️</i>${m}<br>Ketuk "+ Tambah Transaksi" untuk mulai.</div>`;
 const sorted = a => [...a].sort((x, y) => y.date.localeCompare(x.date));
