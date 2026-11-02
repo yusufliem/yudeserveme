@@ -8,6 +8,7 @@ const $ = s => document.querySelector(s);
 const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
 const iso = d => new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 const today = () => iso(new Date());
+const cStart = () => { const n = new Date(); return iso(new Date(n.getFullYear(), n.getMonth() - (n.getDate() >= 24 ? 0 : 1), 24)); };
 const mAgo = () => { const d = new Date(), l = new Date(d.getFullYear(), d.getMonth(), 0).getDate(); return iso(new Date(d.getFullYear(), d.getMonth() - 1, Math.min(d.getDate(), l))); };
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmtD = d => new Date(d + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -31,7 +32,7 @@ function range() {
   const n = new Date(), t = today(); let a, b = t;
   if (S.per === 'day') a = t;
   else if (S.per === 'week') { const d = new Date(n); d.setDate(n.getDate() - 6); a = iso(d); } // 7 hari terakhir
-  else if (S.per === 'month') a = t.slice(0, 8) + '01';
+  else if (S.per === 'month') a = cStart();
   else if (S.per === 'last') { a = iso(new Date(n.getFullYear(), n.getMonth() - 2, 24)); b = iso(new Date(n.getFullYear(), n.getMonth() - 1, 25)); } // 24 dua bulan lalu s/d 25 bulan lalu
   else { a = S.from || mAgo(); b = S.to || t; if (a > b) [a, b] = [b, a]; }
   const len = Math.round((new Date(b) - new Date(a)) / 864e5) + 1;
@@ -74,7 +75,7 @@ function render() {
     let label, big = null, boxes;
     if (S.per === 'day') { label = 'Saldo bersih (total sejak awal)'; big = all; boxes = [box('Pemasukan hari ini', inc), box('Pengeluaran hari ini', exp)]; }
     else if (S.per === 'week') { label = 'Pengeluaran 7 hari terakhir'; big = exp; boxes = []; }
-    else { label = (S.per === 'month' ? 'Bulan ini' : S.per === 'last' ? 'Bulan lalu' : 'Periode kustom') + ` (${rg})`; boxes = [box('Pemasukan', inc), box('Pengeluaran', exp)]; }
+    else { label = (S.per === 'month' ? 'Bulan ini' : S.per === 'last' ? 'Bulan lalu' : 'Periode kustom')+ (S.per === 'month' ? ` (${new Date(R.a + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })} - hari ini)` : ` (${rg})`);; boxes = [box('Pemasukan', inc), box('Pengeluaran', exp)]; }
     v.innerHTML = `<h1>Kas Mama Joel Jess</h1>${chips()}
       <div class="hero"><small>${label}</small>${big !== null ? `<div class="big">${rp(big)}</div>` : ''}
       ${boxes.length ? `<div class="two" style="margin-top:${big !== null ? 16 : 12}px;grid-template-columns:repeat(${boxes.length},1fr)">${boxes.join('')}</div>` : ''}</div>
