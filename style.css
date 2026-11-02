@@ -49,7 +49,7 @@ nav button.on{color:#6a5cff;background:#f0eeff}
 .go{width:100%;padding:17px;border-radius:18px;background:var(--g);color:#fff;font-weight:800;font-size:16px;margin-top:6px}
 .go:disabled{opacity:.6}
 .del{width:100%;padding:14px;color:var(--out);font-weight:700;margin-top:4px}
-#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-140%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:99px;z-index:20;transition:.3s;font-weight:600;max-width:90vw}
-#toast.show{transform:translate(-50%,0)}#toast.err{background:var(--out)}
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-250%);opacity:0;pointer-events:none;background:var(--ink);color:#fff;padding:12px 18px;border-radius:99px;z-index:20;transition:.3s;font-weight:600;max-width:90vw}
+#toast.show{transform:translate(-50%,0);opacity:1}#toast.err{background:var(--out)}
 label{display:block;font-size:13px;color:var(--mut);margin:0 0 6px 2px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
