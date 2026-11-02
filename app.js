@@ -76,7 +76,7 @@ function render() {
     if (S.per === 'day') { label = 'Saldo bersih (total sejak awal)'; big = all; boxes = [box('Pemasukan hari ini', inc), box('Pengeluaran hari ini', exp)]; }
     else if (S.per === 'week') { label = 'Pengeluaran 7 hari terakhir'; big = exp; boxes = []; }
     else { label = (S.per === 'month' ? 'Bulan ini' : S.per === 'last' ? 'Bulan lalu' : 'Periode kustom') + (S.per === 'month' ? ` (${new Date(R.a + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })} - hari ini)` : ` (${rg})`); boxes = [box('Pemasukan', inc), box('Pengeluaran', exp)]; }
-    v.innerHTML = `<h1>Kas Mama Joel Jess</h1>${chips()}
+    v.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 14px"><h1 style="margin:0">Kas Mama Joel Jess</h1><img src="celengan.png" alt="" width="50" height="50" style="flex:none;object-fit:contain"></div>${chips()}
       <div class="hero"><small>${label}</small>${big !== null ? `<div class="big">${rp(big)}</div>` : ''}
       ${boxes.length ? `<div class="two" style="margin-top:${big !== null ? 16 : 12}px;grid-template-columns:repeat(${boxes.length},1fr)">${boxes.join('')}</div>` : ''}</div>
       ${`<h2>${S.per === 'month' ? 'Transaksi sejak ' + fs(sd) : S.per === 'day' ? 'Transaksi hari ini' : 'Transaksi terbaru'}</h2>${recent.length ? recent.map(txRow).join('') : empty(S.per === 'day' ? 'Belum ada transaksi hari ini.' : 'Belum ada transaksi di periode ini.')}`}`;
