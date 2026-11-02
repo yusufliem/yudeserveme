@@ -8,6 +8,7 @@ const $ = s => document.querySelector(s);
 const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
 const iso = d => new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 const today = () => iso(new Date());
+const mAgo = () => { const d = new Date(), l = new Date(d.getFullYear(), d.getMonth(), 0).getDate(); return iso(new Date(d.getFullYear(), d.getMonth() - 1, Math.min(d.getDate(), l))); };
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmtD = d => new Date(d + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 let S = { data: [], tab: 'home', per: 'month', from: '', to: '', q: '', cat: '', pin: localStorage.pin || '', type: 'out', fcat: '', edit: null, loaded: false };
