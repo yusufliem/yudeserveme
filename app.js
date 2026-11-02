@@ -1,5 +1,5 @@
 // ===== app.js =====
-const API = 'https://script.google.com/macros/s/AKfycbxVrmuVxaJXoD6E5rwx4mrVthfFykpXBrkVvDCOfKYXZ8GfTtHhFlqDWFwcOwsZ3-4rYQ/exec''; // tempel URL /exec dari Apps Script
+const API = 'https://script.google.com/macros/s/AKfycbxVrmuVxaJXoD6E5rwx4mrVthfFykpXBrkVvDCOfKYXZ8GfTtHhFlqDWFwcOwsZ3-4rYQ/exec'; // tempel URL /exec dari Apps Script
 const CATS = {
   out: ['KPR', 'Babeh', 'Flazz','IPL','PAM','Wifi','Listrik','Netflix','Sayur','Pampers','Sembako','Online Shop','Bensin+Parkir','Paylater','Alfa','Jajan', 'Motor','Dadakan','Mall','Pendidikan', 'Lainnya'],
   in: ['Gaji', 'Bonus', 'Freelance', 'Investasi', 'Lainnya']
@@ -44,11 +44,11 @@ const tot = (a, b, t) => S.data.filter(r => r.type === t && inR(r, a, b)).reduce
 
 async function load() {
   try {
-    const j = await api('list'); S.data = j.data; S.loaded = true;
+    const j = await api('list'); S.data = j.data; S.loaded = true; S.err = false;
     localStorage.cache = JSON.stringify(j.data);
   } catch (e) {
     if (e.message === 'PIN salah') { localStorage.removeItem('pin'); S.pin = ''; return askPin('PIN salah, coba lagi'); }
-    toast('Gagal memuat data. Periksa koneksi.', 1);
+    toast('Gagal memuat data. Periksa koneksi.', 1); S.loaded = true; S.err = true;
   }
   render();
 }
@@ -103,6 +103,7 @@ function render() {
       <select id="fc" style="margin-bottom:10px"><option value="">Semua kategori</option>${cats.map(c => `<option ${S.cat === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>
       <div id="list">${list.length ? list.slice(0, 200).map(txRow).join('') : empty('Tidak ada transaksi yang cocok.')}</div>`;
   }
+  if (S.err && S.pin) v.insertAdjacentHTML('afterbegin', '<div class="card" style="background:#fff1f3;color:#e0455f"><b>Data belum bisa dimuat.</b><br><small>Periksa internet dan URL di app.js, lalu coba lagi.</small><button id="retry" class="chip on" style="margin-top:10px">Coba lagi</button></div>');
   document.querySelectorAll('nav [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === S.tab));
 }
 
@@ -165,7 +166,8 @@ function askPin(msg) {
 // ---------- event ----------
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
-  if (t.id === 'fab') openSheet();
+  if (t.id === 'retry') { S.err = false; S.loaded = false; render(); load(); }
+  else if (t.id === 'fab') openSheet();
   else if (t.id === 'close') closeSheet();
   else if (t.dataset.t) { S.tab = t.dataset.t; render(); scrollTo(0, 0); }
   else if (t.dataset.per) { S.per = t.dataset.per; render(); }
