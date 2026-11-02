@@ -1,5 +1,5 @@
 // ===== app.js =====
-const API = 'https://script.google.com/macros/s/AKfycbxVrmuVxaJXoD6E5rwx4mrVthfFykpXBrkVvDCOfKYXZ8GfTtHhFlqDWFwcOwsZ3-4rYQ/exec'; // tempel URL /exec dari Apps Script
+const API = 'GANTI_DENGAN_URL_WEB_APP'; // tempel URL /exec dari Apps Script
 const CATS = {
   out: ['KPR', 'Babeh', 'Flazz','IPL','PAM','Wifi','Listrik','Netflix','Sayur','Pampers','Sembako','Online Shop','Bensin+Parkir','Paylater','Alfa','Jajan', 'Motor','Dadakan','Mall','Pendidikan', 'Lainnya'],
   in: ['Gaji', 'Bonus', 'Freelance', 'Investasi', 'Lainnya']
@@ -65,20 +65,20 @@ function render() {
   const v = $('#view');
   if (!S.loaded && S.pin) v.innerHTML = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
   else if (S.tab === 'home') {
-       const nw = new Date(), sd = iso(new Date(nw.getFullYear(), nw.getMonth() - (nw.getDate() >= 24 ? 0 : 1), 24));
-    const recent = S.per === 'day' ? sorted(S.data.filter(r => r.date >= sd && r.date <= R.b)) : sorted(S.data.filter(r => inR(r, R.a, R.b))).slice(0, 6);
+    const nw = new Date(), sd = iso(new Date(nw.getFullYear(), nw.getMonth() - (nw.getDate() >= 24 ? 0 : 1), 24));
+    const recent = S.per === 'month' ? sorted(S.data.filter(r => r.date >= sd && r.date <= R.b)) : sorted(S.data.filter(r => inR(r, R.a, R.b))).slice(0, 6);
     const fs = d => new Date(d + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
     const box = (l, n) => `<div class="glass"><small>${l}</small><b>${rp(n)}</b></div>`;
     const all = S.data.reduce((s, r) => s + (r.type === 'in' ? r.amt : -r.amt), 0);
     const rg = `${fs(R.a)} - ${fs(R.b)}`;
     let label, big = null, boxes;
-    if (S.per === 'day') { label = 'Saldo bersih (total sejak awal)'; big = all; boxes = [box('Pengeluaran hari ini', exp)]; }
+    if (S.per === 'day') { label = 'Saldo bersih (total sejak awal)'; big = all; boxes = [box('Pemasukan hari ini', inc), box('Pengeluaran hari ini', exp)]; }
     else if (S.per === 'week') { label = 'Pengeluaran 7 hari terakhir'; big = exp; boxes = []; }
     else { label = (S.per === 'month' ? 'Bulan ini' : S.per === 'last' ? 'Bulan lalu' : 'Periode kustom') + ` (${rg})`; boxes = [box('Pemasukan', inc), box('Pengeluaran', exp)]; }
     v.innerHTML = `<h1>Kas Mama Joel Jess</h1>${chips()}
       <div class="hero"><small>${label}</small>${big !== null ? `<div class="big">${rp(big)}</div>` : ''}
       ${boxes.length ? `<div class="two" style="margin-top:${big !== null ? 16 : 12}px;grid-template-columns:repeat(${boxes.length},1fr)">${boxes.join('')}</div>` : ''}</div>
-      <h2>${S.per === 'day' ? 'Transaksi sejak ' + fs(sd) : 'Transaksi terbaru'}</h2>${recent.length ? recent.map(txRow).join('') : empty('Belum ada transaksi di periode ini.')}`;
+      ${S.per === 'day' ? '' : `<h2>${S.per === 'month' ? 'Transaksi sejak ' + fs(sd) : 'Transaksi terbaru'}</h2>${recent.length ? recent.map(txRow).join('') : empty('Belum ada transaksi di periode ini.')}`}`;
   } else if (S.tab === 'chart') {
     const ex = S.data.filter(r => r.type === 'out' && inR(r, R.a, R.b)), by = {};
     ex.forEach(r => by[r.cat] = (by[r.cat] || 0) + r.amt);
