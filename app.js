@@ -11,7 +11,7 @@ const today = () => iso(new Date());
 const mAgo = () => { const d = new Date(), l = new Date(d.getFullYear(), d.getMonth(), 0).getDate(); return iso(new Date(d.getFullYear(), d.getMonth() - 1, Math.min(d.getDate(), l))); };
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmtD = d => new Date(d + 'T00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-let S = { data: [], tab: 'home', per: 'month', from: '', to: '', q: '', cat: '', pin: localStorage.pin || '', type: 'out', fcat: '', edit: null, loaded: false };
+let S = { data: [], tab: 'home', per: 'day', from: '', to: '', q: '', cat: '', pin: localStorage.pin || '', type: 'out', fcat: '', edit: null, loaded: false };
 try { S.data = JSON.parse(localStorage.cache || '[]'); S.loaded = S.data.length > 0; } catch (e) {}
 
 async function api(action, p = {}) {
