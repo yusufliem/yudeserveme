@@ -1,7 +1,7 @@
 // ===== app.js =====
 const API = 'https://script.google.com/macros/s/AKfycbxVrmuVxaJXoD6E5rwx4mrVthfFykpXBrkVvDCOfKYXZ8GfTtHhFlqDWFwcOwsZ3-4rYQ/exec'; // tempel URL /exec dari Apps Script
 const CATS = {
-  out: ['KPR', 'Babeh', 'Flazz','IPL','PAM','Wifi','Listrik','Netflix','Sayur','Pampers','Sembako','Online Shop','Bensin+Parkir','Paylater','Alfa','Jajan', 'Motor','Dadakan','Mall','Pendidikan', 'Lainnya'],
+  out: ['KPR', 'Babeh', 'Flazz','IPL','PAM','Wifi','Listrik','Netflix','Sayur','Pampers','Sembako','Online Shop','Bensin','Parkir','Paylater','Alfa','Jajan', 'Motor','Dadakan','Mall','Pendidikan', 'Lainnya'],
   in: ['Gaji', 'Bonus', 'Freelance', 'Investasi', 'Lainnya']
 };
 const $ = s => document.querySelector(s);
